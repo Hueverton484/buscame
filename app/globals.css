@@ -181,3 +181,37 @@ a, button {
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease,
     transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
+
+/* === Estilos de impresión === */
+@media print {
+  /* Ocultar header, footer, scroll-top, toaster del layout */
+  header, footer, [data-sonner-toaster] {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  /* Forzar que las imágenes se impriman */
+  img {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  /* Backgrounds con color sí salen */
+  * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  /* Quitar sombras al imprimir */
+  .shadow-xl, .shadow-2xl, .shadow-lg, .shadow-md, .shadow-sm, .shadow {
+    box-shadow: none !important;
+  }
+}
+
+/* Tamaño de página para poster */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}

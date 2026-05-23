@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import {
   MapPin,
   Calendar,
@@ -8,18 +9,62 @@ import {
   MessageCircle,
   ArrowLeft,
   Dog,
+  Printer,
+  Share2,
 } from "lucide-react";
 import { getPublicacionPorId } from "@/lib/supabase/queries";
 import { getCurrentUser } from "@/lib/supabase/auth";
 import { EstadoBadge } from "@/components/EstadoBadge";
 import { BotonReportar } from "@/components/BotonReportar";
 import { PhotoGallery } from "@/components/PhotoLightbox";
+import { BotonCompartir } from "@/components/BotonCompartir";
 import { TAMANO_LABELS } from "@/lib/constants";
 import {
   formatearFechaRelativa,
   formatearMoneda,
   whatsappLink,
 } from "@/lib/utils";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const pub = await getPublicacionPorId(id);
+  if (!pub) return { title: "Publicación no encontrada" };
+
+  const nombre =
+    pub.perro.nombre ||
+    (pub.tipo === "encontrado" ? "Perro encontrado" : "Perro perdido");
+
+  const titulo =
+    pub.tipo === "perdido"
+      ? `🔴 ${nombre} se perdió en ${pub.ubicacion.barrio}`
+      : `🟢 Encontré un ${pub.perro.raza} en ${pub.ubicacion.barrio}`;
+
+  const descripcion = `${pub.perro.raza} · ${pub.perro.color} · ${pub.perro.descripcion.slice(0, 120)}${pub.perro.descripcion.length > 120 ? "…" : ""}`;
+  const foto = pub.fotos[0];
+
+  return {
+    title: nombre,
+    description: descripcion,
+    openGraph: {
+      title: titulo,
+      description: descripcion,
+      images: foto ? [{ url: foto, width: 1200, height: 630, alt: nombre }] : [],
+      type: "article",
+      locale: "es_AR",
+      siteName: "Buscame",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titulo,
+      description: descripcion,
+      images: foto ? [foto] : [],
+    },
+  };
+}
 
 export default async function DetallePublicacion({
   params,
@@ -232,6 +277,29 @@ export default async function DetallePublicacion({
             </div>
             <p className="text-xs text-stone-500 mt-3 text-center">
               Prefiere {contacto.preferenciaContacto === "whatsapp" ? "WhatsApp" : contacto.preferenciaContacto}
+            </p>
+          </div>
+
+          {/* Compartir + Poster */}
+          <div className="bg-white rounded-2xl border border-stone-200 p-5 space-y-2">
+            <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-3">
+              Ayudá a difundir
+            </h2>
+            <BotonCompartir
+              publicacionId={publicacion.id}
+              nombre={nombreMostrar}
+              tipo={publicacion.tipo}
+              barrio={publicacion.ubicacion.barrio}
+            />
+            <Link
+              href={`/publicaciones/${publicacion.id}/poster`}
+              className="group inline-flex items-center justify-center gap-2 w-full bg-white hover:bg-stone-50 border border-stone-200 text-stone-900 text-sm font-semibold py-2.5 rounded-xl transition-colors"
+            >
+              <Printer className="h-4 w-4 group-hover:scale-110 transition-transform" />
+              Imprimir poster
+            </Link>
+            <p className="text-xs text-stone-500 text-center pt-1 leading-snug">
+              Pegá el poster en postes del barrio — incluye QR para ver más info
             </p>
           </div>
 
