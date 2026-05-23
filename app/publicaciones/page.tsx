@@ -1,8 +1,8 @@
 import { getPublicaciones } from "@/lib/supabase/queries";
-import { PublicacionCard } from "@/components/PublicacionCard";
+import { MasonryGrid } from "@/components/MasonryGrid";
 import { FiltrosBusqueda } from "@/components/FiltrosBusqueda";
 import { parseFiltrosFromSearchParams } from "@/lib/filtrar";
-import { Search } from "lucide-react";
+import { IlustracionBuscar } from "@/components/Ilustraciones";
 
 export const metadata = {
   title: "Publicaciones",
@@ -41,11 +41,11 @@ export default async function PublicacionesPage({
         <section>
           {publicaciones.length === 0 ? (
             <div className="flex flex-col items-center justify-center bg-white border border-stone-200 rounded-2xl p-12 text-center animate-fade-in-up">
-              <div className="text-6xl mb-4">🔍</div>
-              <h2 className="text-xl font-bold text-stone-900 mb-2">
+              <IlustracionBuscar className="h-40 w-40 mb-3" />
+              <h2 className="font-display text-2xl font-semibold text-stone-900 mb-2 tracking-tight">
                 No encontramos publicaciones
               </h2>
-              <p className="text-sm text-stone-600 max-w-sm mb-5">
+              <p className="text-stone-600 max-w-sm mb-5 leading-relaxed">
                 Probá modificar los filtros o limpiarlos. Si todavía no hay nada que coincida, podés ser la primera persona en publicar.
               </p>
               <a
@@ -56,11 +56,7 @@ export default async function PublicacionesPage({
               </a>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-              {publicaciones.map((pub) => (
-                <PublicacionCard key={pub.id} publicacion={pub} />
-              ))}
-            </div>
+            <MasonryGrid publicaciones={publicaciones} />
           )}
         </section>
       </div>

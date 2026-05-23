@@ -17,6 +17,7 @@ import { EstadoBadge } from "@/components/EstadoBadge";
 import { BotonReportar } from "@/components/BotonReportar";
 import { PhotoGallery } from "@/components/PhotoLightbox";
 import { BotonCompartir } from "@/components/BotonCompartir";
+import { IlustracionPistas } from "@/components/Ilustraciones";
 import { TAMANO_LABELS } from "@/lib/constants";
 import {
   formatearFechaRelativa,
@@ -184,9 +185,9 @@ export default async function DetallePublicacion({
             </div>
             {pistas.length === 0 ? (
               <div className="text-center py-6">
-                <div className="text-4xl mb-2">🔎</div>
-                <p className="text-sm text-stone-600">
-                  Todavía no hay pistas. Si lo viste, compartilo desde el botón <em>"Compartir"</em>.
+                <IlustracionPistas className="h-28 w-28 mx-auto mb-3" />
+                <p className="text-sm text-stone-600 max-w-xs mx-auto">
+                  Todavía no hay pistas. Si lo viste por algún lado, compartí esta publicación con tus vecinos.
                 </p>
               </div>
             ) : (

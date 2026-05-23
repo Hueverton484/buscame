@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import Link from "next/link";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
@@ -89,17 +90,44 @@ export function MapaPublicaciones({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {publicaciones.map((pub) => (
-          <Marker
-            key={pub.id}
-            position={[pub.ubicacion.lat, pub.ubicacion.lng]}
-            icon={ICONOS[pub.estado]}
-          >
-            <Popup>
-              <PopupContent publicacion={pub} />
-            </Popup>
-          </Marker>
-        ))}
+        <MarkerClusterGroup
+          chunkedLoading
+          iconCreateFunction={(cluster: L.MarkerCluster) => {
+            const count = cluster.getChildCount();
+            return L.divIcon({
+              className: "buscame-cluster",
+              html: `
+                <div style="
+                  width: 40px;
+                  height: 40px;
+                  background: linear-gradient(135deg, #ff8a5b, #ea580c);
+                  border: 3px solid white;
+                  border-radius: 50%;
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-weight: bold;
+                  font-size: 14px;
+                ">${count}</div>
+              `,
+              iconSize: L.point(40, 40, true),
+            });
+          }}
+        >
+          {publicaciones.map((pub) => (
+            <Marker
+              key={pub.id}
+              position={[pub.ubicacion.lat, pub.ubicacion.lng]}
+              icon={ICONOS[pub.estado]}
+            >
+              <Popup>
+                <PopupContent publicacion={pub} />
+              </Popup>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
       </MapContainer>
     </div>
   );

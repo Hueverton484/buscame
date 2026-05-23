@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Plus, FolderHeart } from "lucide-react";
+import { Plus } from "lucide-react";
 import { getCurrentUser } from "@/lib/supabase/auth";
 import { getPublicaciones } from "@/lib/supabase/queries";
 import { PublicacionCard } from "@/components/PublicacionCard";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { IlustracionVacio } from "@/components/Ilustraciones";
 
 export const metadata = {
   title: "Mis publicaciones",
@@ -44,14 +45,12 @@ export default async function MisPublicacionesPage() {
       </header>
 
       {misPublicaciones.length === 0 ? (
-        <div className="flex flex-col items-center justify-center bg-white border border-stone-200 rounded-xl p-12 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-100 text-brand-600 mb-4">
-            <FolderHeart className="h-7 w-7" />
-          </div>
-          <h2 className="text-lg font-semibold text-stone-900 mb-1">
+        <div className="flex flex-col items-center justify-center bg-white border border-stone-200 rounded-2xl p-12 text-center">
+          <IlustracionVacio className="h-40 w-40 mb-3" />
+          <h2 className="font-display text-2xl font-semibold text-stone-900 mb-2 tracking-tight">
             Todavía no publicaste nada
           </h2>
-          <p className="text-sm text-stone-600 max-w-sm mb-5">
+          <p className="text-stone-600 max-w-sm mb-5 leading-relaxed">
             Reportá un perro perdido o encontrado y aparecerá acá para que lo gestiones.
           </p>
           <Link
