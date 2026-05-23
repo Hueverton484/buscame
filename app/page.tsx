@@ -6,6 +6,7 @@ import { PublicacionCard } from "@/components/PublicacionCard";
 import { NumeroAnimado } from "@/components/NumeroAnimado";
 import { EstadoBadge } from "@/components/EstadoBadge";
 import { formatearFechaRelativa } from "@/lib/utils";
+import { DedicatoriaMalawi } from "@/components/DedicatoriaMalawi";
 
 export default async function HomePage() {
   const [publicaciones, estadisticas] = await Promise.all([
@@ -23,6 +24,9 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* Dedicatoria personal para mamá + Malawi */}
+      <DedicatoriaMalawi />
+
       {/* Hero con foto emocional */}
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-50 via-stone-50 to-white border-b border-stone-200">
         <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
