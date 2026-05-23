@@ -5,7 +5,7 @@ import { parseFiltrosFromSearchParams } from "@/lib/filtrar";
 import { Search } from "lucide-react";
 
 export const metadata = {
-  title: "Publicaciones · Buscame",
+  title: "Publicaciones",
   description: "Ver perros perdidos y encontrados en Buenos Aires",
 };
 

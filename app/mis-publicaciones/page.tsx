@@ -7,7 +7,7 @@ import { PublicacionCard } from "@/components/PublicacionCard";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Mis publicaciones · Buscame",
+  title: "Mis publicaciones",
 };
 
 export default async function MisPublicacionesPage() {

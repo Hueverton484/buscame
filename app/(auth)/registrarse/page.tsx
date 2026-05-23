@@ -5,7 +5,7 @@ import { FormularioRegistro } from "@/components/FormularioRegistro";
 import { PawPrint } from "lucide-react";
 
 export const metadata = {
-  title: "Crear cuenta · Buscame",
+  title: "Crear cuenta",
 };
 
 export default async function RegistrarsePage() {

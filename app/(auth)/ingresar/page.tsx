@@ -5,7 +5,7 @@ import { FormularioLogin } from "@/components/FormularioLogin";
 import { PawPrint } from "lucide-react";
 
 export const metadata = {
-  title: "Ingresar · Buscame",
+  title: "Ingresar",
 };
 
 export default async function IngresarPage({

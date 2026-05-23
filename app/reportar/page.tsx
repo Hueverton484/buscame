@@ -6,7 +6,7 @@ import { getCurrentUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Reportar un perro · Buscame",
+  title: "Reportar un perro",
   description: "Reportá un perro perdido o encontrado en Buenos Aires",
 };
 

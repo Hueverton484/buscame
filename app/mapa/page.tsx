@@ -4,7 +4,7 @@ import { FiltrosBusqueda } from "@/components/FiltrosBusqueda";
 import { parseFiltrosFromSearchParams } from "@/lib/filtrar";
 
 export const metadata = {
-  title: "Mapa · Buscame",
+  title: "Mapa",
   description: "Ver perros perdidos y avistados en el mapa de Buenos Aires",
 };
 

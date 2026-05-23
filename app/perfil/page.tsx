@@ -3,7 +3,7 @@ import { User, Mail, Phone, Calendar } from "lucide-react";
 import { getCurrentUser, getCurrentPerfil } from "@/lib/supabase/auth";
 
 export const metadata = {
-  title: "Mi perfil · Buscame",
+  title: "Mi perfil",
 };
 
 export default async function PerfilPage() {
