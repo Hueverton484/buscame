@@ -10,7 +10,6 @@ import {
   ArrowLeft,
   Dog,
   Printer,
-  Share2,
 } from "lucide-react";
 import { getPublicacionPorId } from "@/lib/supabase/queries";
 import { getCurrentUser } from "@/lib/supabase/auth";
@@ -122,75 +121,82 @@ export default async function DetallePublicacion({
             </div>
           )}
 
-          {/* Datos del perro */}
-          <div className="bg-white rounded-xl border border-stone-200 p-6 mb-6">
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <div>
-                <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 tracking-tight leading-tight">
-                  {nombreMostrar}
-                </h1>
-                <p className="text-stone-600 mt-1">
-                  {perro.raza} · {perro.color}
-                </p>
-              </div>
-              {recompensa && recompensa > 0 && (
-                <div className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                  {formatearMoneda(recompensa)}
+          {/* Datos del perro — layout revista */}
+          <article className="bg-white rounded-2xl border border-stone-200 p-7 sm:p-9 mb-6">
+            <header className="mb-6">
+              <div className="flex items-start justify-between gap-4 mb-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-600 mb-2">
+                    {publicacion.tipo === "perdido" ? "Reporte de extravío" : "Reporte de encuentro"}
+                  </p>
+                  <h1 className="font-display text-5xl sm:text-6xl font-semibold text-stone-900 tracking-tight leading-[0.95]">
+                    {nombreMostrar}
+                  </h1>
                 </div>
-              )}
-            </div>
+                {recompensa && recompensa > 0 && (
+                  <div className="inline-flex flex-col items-center px-4 py-2 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 text-amber-900 border border-amber-300 shadow-sm flex-shrink-0">
+                    <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Recompensa</span>
+                    <span className="text-xl font-extrabold">{formatearMoneda(recompensa)}</span>
+                  </div>
+                )}
+              </div>
 
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-4 mb-6">
-              <Dato label="Tamaño" valor={TAMANO_LABELS[perro.tamano]} />
-              <Dato label="Sexo" valor={capitalizar(perro.sexo)} />
-              {perro.edadAproximada && (
-                <Dato label="Edad aproximada" valor={perro.edadAproximada} />
-              )}
-              <Dato
-                label="Fecha del evento"
-                valor={new Date(fechaEvento).toLocaleDateString("es-AR", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              />
-            </dl>
+              {/* Pills de info clave inline */}
+              <div className="flex flex-wrap items-center gap-1.5 mt-4">
+                <Pill>{perro.raza}</Pill>
+                <Pill>{perro.color}</Pill>
+                <Pill>{TAMANO_LABELS[perro.tamano].split(" ")[0]}</Pill>
+                <Pill>{capitalizar(perro.sexo)}</Pill>
+                {perro.edadAproximada && <Pill>{perro.edadAproximada}</Pill>}
+              </div>
+            </header>
 
-            <div className="mb-4">
-              <h3 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">
-                Descripción
-              </h3>
-              <p className="text-stone-700 leading-relaxed">{perro.descripcion}</p>
+            {/* Bloque de descripción tipo párrafo de revista */}
+            <div className="prose prose-stone max-w-none">
+              <p className="text-lg sm:text-xl text-stone-800 leading-relaxed first-letter:font-display first-letter:text-5xl first-letter:font-semibold first-letter:text-brand-500 first-letter:float-left first-letter:mr-2 first-letter:mt-1 first-letter:leading-none">
+                {perro.descripcion}
+              </p>
             </div>
 
             {perro.caracteristicasUnicas && (
-              <div>
-                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">
-                  Características únicas
+              <div className="mt-6 p-5 bg-brand-50/50 border-l-4 border-brand-500 rounded-r-lg">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-brand-700 mb-2 flex items-center gap-1.5">
+                  ✨ Señas particulares
                 </h3>
-                <p className="text-stone-700 leading-relaxed">
+                <p className="text-base text-stone-800 leading-relaxed">
                   {perro.caracteristicasUnicas}
                 </p>
               </div>
             )}
-          </div>
+          </article>
 
           {/* Pistas */}
-          <div className="bg-white rounded-xl border border-stone-200 p-6">
-            <h2 className="text-lg font-bold text-stone-900 mb-4">
-              Pistas y avistamientos {pistas.length > 0 && `(${pistas.length})`}
-            </h2>
+          <div className="bg-white rounded-2xl border border-stone-200 p-7">
+            <div className="flex items-end justify-between mb-5 pb-4 border-b border-stone-100">
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold text-stone-900 tracking-tight">
+                Pistas y avistamientos
+              </h2>
+              {pistas.length > 0 && (
+                <span className="inline-flex items-center justify-center min-w-7 h-7 px-2 rounded-full bg-brand-100 text-brand-700 text-xs font-bold">
+                  {pistas.length}
+                </span>
+              )}
+            </div>
             {pistas.length === 0 ? (
-              <p className="text-sm text-stone-500">
-                Todavía no hay pistas. Si lo viste, ¡compartilo!
-              </p>
+              <div className="text-center py-6">
+                <div className="text-4xl mb-2">🔎</div>
+                <p className="text-sm text-stone-600">
+                  Todavía no hay pistas. Si lo viste, compartilo desde el botón <em>"Compartir"</em>.
+                </p>
+              </div>
             ) : (
-              <ul className="space-y-4">
+              <ul className="space-y-5">
                 {pistas.map((pista) => (
                   <li
                     key={pista.id}
-                    className="border-l-2 border-brand-300 pl-4 py-1"
+                    className="relative pl-6"
                   >
+                    <div className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full bg-brand-500 ring-4 ring-brand-100" />
                     <div className="flex items-center gap-2 text-sm">
                       <span className="font-semibold text-stone-900">
                         {pista.autorNombre}
@@ -200,9 +206,9 @@ export default async function DetallePublicacion({
                         {formatearFechaRelativa(pista.fecha)}
                       </span>
                     </div>
-                    <p className="text-stone-700 mt-1">{pista.mensaje}</p>
+                    <p className="text-stone-700 mt-1.5 leading-relaxed">{pista.mensaje}</p>
                     {pista.ubicacionAvistamiento && (
-                      <p className="text-xs text-stone-500 mt-1 inline-flex items-center gap-1">
+                      <p className="text-xs text-stone-500 mt-2 inline-flex items-center gap-1 bg-stone-100 px-2 py-1 rounded-full">
                         <MapPin className="h-3 w-3" />
                         Visto en {pista.ubicacionAvistamiento.barrio}
                       </p>
@@ -314,14 +320,11 @@ export default async function DetallePublicacion({
   );
 }
 
-function Dato({ label, valor }: { label: string; valor: string }) {
+function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <dt className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
-        {label}
-      </dt>
-      <dd className="text-stone-900 mt-0.5">{valor}</dd>
-    </div>
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-medium">
+      {children}
+    </span>
   );
 }
 
