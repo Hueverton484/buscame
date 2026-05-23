@@ -41,7 +41,7 @@ export default async function ReportarPage() {
             <span className="text-2xl">🐾</span>
           </div>
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight leading-tight">
+            <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 tracking-tight leading-tight">
               Reportar un perro
             </h1>
           </div>

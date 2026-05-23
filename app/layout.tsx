@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Fraunces } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -9,6 +9,13 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${geistSans.variable} h-full antialiased`} data-scroll-behavior="smooth">
+    <html lang="es" className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="min-h-full flex flex-col bg-stone-50 text-stone-900">
         <Header />
         <main className="flex-1">{children}</main>

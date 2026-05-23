@@ -81,7 +81,7 @@ export default async function DetallePublicacion({
           <div className="bg-white rounded-xl border border-stone-200 p-6 mb-6">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <h1 className="text-3xl font-bold text-stone-900">
+                <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 tracking-tight leading-tight">
                   {nombreMostrar}
                 </h1>
                 <p className="text-stone-600 mt-1">

@@ -22,7 +22,7 @@ export default async function PublicacionesPage({
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
       <header className="mb-8 flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">Publicaciones</h1>
+          <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 tracking-tight">Publicaciones</h1>
           <p className="mt-1 text-stone-600">
             <span className="font-semibold text-stone-900">{publicaciones.length}</span>{" "}
             {publicaciones.length === 1 ? "resultado" : "resultados"}

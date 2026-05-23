@@ -18,8 +18,8 @@ export default async function BienvenidoPage() {
           <CheckCircle2 className="h-12 w-12" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-3">
-          ¡Bienvenido a Buscame, {perfil.nombre.split(" ")[0]}!
+        <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 mb-3 tracking-tight leading-tight">
+          ¡Bienvenido a Buscame, <em className="not-italic text-brand-500">{perfil.nombre.split(" ")[0]}</em>!
         </h1>
 
         <p className="text-stone-600 text-lg mb-8 max-w-md mx-auto">

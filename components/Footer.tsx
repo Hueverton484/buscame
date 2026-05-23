@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { PawPrint, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
+import { Logo } from "./Logo";
 
 export function Footer() {
   return (
@@ -12,11 +13,8 @@ export function Footer() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-white shadow-md">
-                <PawPrint className="h-4 w-4" />
-              </div>
-              <span className="text-lg font-bold text-white">Buscame</span>
+            <div className="mb-3 [&_span]:!text-white">
+              <Logo size="sm" />
             </div>
             <p className="text-sm text-stone-400 leading-relaxed max-w-xs">
               Plataforma comunitaria para ayudar a reencontrar perros perdidos en Buenos Aires.

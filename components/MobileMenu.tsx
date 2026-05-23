@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Map, FileText, FolderHeart, User, LogIn, LogOut, PawPrint } from "lucide-react";
+import { Menu, X, Map, FileText, FolderHeart, User, LogIn, LogOut } from "lucide-react";
 import { cerrarSesion } from "@/app/(auth)/actions";
+import { Logo } from "./Logo";
 
 export function MobileMenu({
   perfil,
@@ -32,12 +33,7 @@ export function MobileMenu({
           <div className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col">
             {/* Header del drawer */}
             <div className="flex items-center justify-between p-4 border-b border-stone-200">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-white">
-                  <PawPrint className="h-4 w-4" />
-                </div>
-                <span className="font-bold text-stone-900">Buscame</span>
-              </div>
+              <Logo size="sm" />
               <button
                 type="button"
                 onClick={() => setOpen(false)}

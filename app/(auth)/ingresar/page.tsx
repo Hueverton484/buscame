@@ -28,7 +28,7 @@ export default async function IngresarPage({
         <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500 text-white shadow-md mb-4">
           <PawPrint className="h-7 w-7" />
         </div>
-        <h1 className="text-3xl font-bold text-stone-900">Ingresar</h1>
+        <h1 className="font-display text-4xl font-semibold text-stone-900 tracking-tight">Ingresar</h1>
         <p className="mt-2 text-stone-600">Bienvenido de nuevo a Buscame</p>
       </header>
 

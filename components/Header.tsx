@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { PawPrint } from "lucide-react";
 import { getCurrentPerfil } from "@/lib/supabase/auth";
 import { UsuarioMenu } from "./UsuarioMenu";
 import { MobileMenu } from "./MobileMenu";
+import { Logo } from "./Logo";
 
 export async function Header() {
   const perfil = await getCurrentPerfil();
@@ -11,17 +11,8 @@ export async function Header() {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-stone-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 group"
-            aria-label="Buscame - Inicio"
-          >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-500 text-white shadow-sm group-hover:bg-brand-600 transition-colors">
-              <PawPrint className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-stone-900">
-              Buscame
-            </span>
+          <Link href="/" aria-label="Buscame - Inicio">
+            <Logo size="md" />
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
