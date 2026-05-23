@@ -1,4 +1,5 @@
 import type { Publicacion, FiltrosBusqueda } from "./types";
+import { distanciaKm } from "./geo";
 
 export function filtrarPublicaciones(
   publicaciones: Publicacion[],
@@ -33,6 +34,18 @@ export function filtrarPublicaciones(
   });
 }
 
+export function filtrarPorDistancia(
+  publicaciones: Publicacion[],
+  lat: number,
+  lng: number,
+  radioKm: number
+): Publicacion[] {
+  return publicaciones.filter((pub) => {
+    const d = distanciaKm(lat, lng, pub.ubicacion.lat, pub.ubicacion.lng);
+    return d <= radioKm;
+  });
+}
+
 export function parseFiltrosFromSearchParams(
   searchParams: Record<string, string | string[] | undefined>
 ): FiltrosBusqueda {
@@ -50,4 +63,22 @@ export function parseFiltrosFromSearchParams(
     tamano: get("tamano") as FiltrosBusqueda["tamano"],
     texto: get("texto"),
   };
+}
+
+export function parseGeoFromSearchParams(
+  searchParams: Record<string, string | string[] | undefined>
+): { lat: number; lng: number; radio: number } | null {
+  const get = (key: string): string | undefined => {
+    const v = searchParams[key];
+    return typeof v === "string" ? v : undefined;
+  };
+  const lat = get("lat");
+  const lng = get("lng");
+  const radio = get("radio");
+  if (!lat || !lng || !radio) return null;
+  const latN = parseFloat(lat);
+  const lngN = parseFloat(lng);
+  const radioN = parseFloat(radio);
+  if (isNaN(latN) || isNaN(lngN) || isNaN(radioN)) return null;
+  return { lat: latN, lng: lngN, radio: radioN };
 }

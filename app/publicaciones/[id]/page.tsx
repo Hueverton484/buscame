@@ -17,6 +17,7 @@ import { EstadoBadge } from "@/components/EstadoBadge";
 import { BotonReportar } from "@/components/BotonReportar";
 import { PhotoGallery } from "@/components/PhotoLightbox";
 import { BotonCompartir } from "@/components/BotonCompartir";
+import { FormularioPista } from "@/components/FormularioPista";
 import { IlustracionPistas } from "@/components/Ilustraciones";
 import { TAMANO_LABELS } from "@/lib/constants";
 import {
@@ -186,9 +187,18 @@ export default async function DetallePublicacion({
             {pistas.length === 0 ? (
               <div className="text-center py-6">
                 <IlustracionPistas className="h-28 w-28 mx-auto mb-3" />
-                <p className="text-sm text-stone-600 max-w-xs mx-auto">
-                  Todavía no hay pistas. Si lo viste por algún lado, compartí esta publicación con tus vecinos.
+                <p className="text-sm text-stone-600 max-w-xs mx-auto mb-5">
+                  Todavía no hay pistas. Si lo viste por algún lado, dejá la primera.
                 </p>
+                {!esPropietario && (
+                  <div className="max-w-xs mx-auto">
+                    <FormularioPista
+                      publicacionId={publicacion.id}
+                      logueado={!!user}
+                      nombrePerro={nombreMostrar}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <ul className="space-y-5">
@@ -217,6 +227,17 @@ export default async function DetallePublicacion({
                   </li>
                 ))}
               </ul>
+            )}
+
+            {/* CTA dejar pista si ya hay pistas */}
+            {pistas.length > 0 && !esPropietario && (
+              <div className="mt-6 pt-6 border-t border-stone-100">
+                <FormularioPista
+                  publicacionId={publicacion.id}
+                  logueado={!!user}
+                  nombrePerro={nombreMostrar}
+                />
+              </div>
             )}
           </div>
         </div>

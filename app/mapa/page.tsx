@@ -1,7 +1,12 @@
 import { getPublicaciones } from "@/lib/supabase/queries";
 import { MapaWrapper } from "@/components/MapaWrapper";
 import { FiltrosBusqueda } from "@/components/FiltrosBusqueda";
-import { parseFiltrosFromSearchParams } from "@/lib/filtrar";
+import { BotonCercaMio } from "@/components/BotonCercaMio";
+import {
+  filtrarPorDistancia,
+  parseFiltrosFromSearchParams,
+  parseGeoFromSearchParams,
+} from "@/lib/filtrar";
 
 export const metadata = {
   title: "Mapa",
@@ -15,7 +20,9 @@ export default async function MapaPage({
 }) {
   const params = await searchParams;
   const filtros = parseFiltrosFromSearchParams(params);
-  const publicaciones = await getPublicaciones(filtros);
+  const geo = parseGeoFromSearchParams(params);
+  let publicaciones = await getPublicaciones(filtros);
+  if (geo) publicaciones = filtrarPorDistancia(publicaciones, geo.lat, geo.lng, geo.radio);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
@@ -27,7 +34,8 @@ export default async function MapaPage({
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6">
-        <aside>
+        <aside className="space-y-3">
+          <BotonCercaMio />
           <FiltrosBusqueda />
 
           <div className="mt-4 bg-white rounded-xl border border-stone-200 p-4">
