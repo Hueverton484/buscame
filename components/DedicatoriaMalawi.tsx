@@ -29,12 +29,12 @@ export function DedicatoriaMalawi() {
 
         {/* Dos fotos en estilo polaroid */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-          {/* Foto 1: mamá con Malawi */}
+          {/* Foto 1: Malawi con su perrito */}
           <figure className="group bg-white p-3 pb-12 rounded-md shadow-xl rotate-[-2deg] hover:rotate-0 hover:scale-105 transition-all duration-500 max-w-[260px] sm:max-w-[280px]">
             <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden rounded-sm">
               <Image
                 src="/malawi/mama-malawi.jpeg"
-                alt="Mamá con Malawi"
+                alt="Malawi con su perrito"
                 fill
                 sizes="280px"
                 className="object-cover"
@@ -42,16 +42,16 @@ export function DedicatoriaMalawi() {
               />
             </div>
             <figcaption className="font-display italic text-stone-700 text-center mt-3 text-lg">
-              Mamá y Malawi 🐾
+              Malawi y su compañero 🐾
             </figcaption>
           </figure>
 
-          {/* Foto 2: mamá y yo */}
+          {/* Foto 2: Malawi y yo */}
           <figure className="group bg-white p-3 pb-12 rounded-md shadow-xl rotate-[2deg] hover:rotate-0 hover:scale-105 transition-all duration-500 max-w-[260px] sm:max-w-[280px]">
             <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden rounded-sm">
               <Image
                 src="/malawi/mama-yo.jpeg"
-                alt="Mamá y yo"
+                alt="Malawi y yo"
                 fill
                 sizes="280px"
                 className="object-cover"
