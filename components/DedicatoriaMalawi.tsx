@@ -23,18 +23,18 @@ export function DedicatoriaMalawi() {
             Te quiero <em className="not-italic bg-gradient-to-r from-rose-500 to-brand-500 bg-clip-text text-transparent">Malawi</em> 💛
           </h1>
           <p className="mt-4 text-stone-600 text-base sm:text-lg max-w-md mx-auto leading-relaxed">
-            Esto es para vos, mamá. Con todo el amor del mundo.
+            Esto es para vos, mamá. Te quiere awito.
           </p>
         </div>
 
         {/* Dos fotos en estilo polaroid */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-          {/* Foto 1: Malawi con su perrito */}
+          {/* Foto 1: Malawi con pewo malvado */}
           <figure className="group bg-white p-3 pb-12 rounded-md shadow-xl rotate-[-2deg] hover:rotate-0 hover:scale-105 transition-all duration-500 max-w-[260px] sm:max-w-[280px]">
             <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden rounded-sm">
               <Image
                 src="/malawi/mama-malawi.jpeg"
-                alt="Malawi con su perrito"
+                alt="Pewo malvado"
                 fill
                 sizes="280px"
                 className="object-cover"
@@ -42,12 +42,12 @@ export function DedicatoriaMalawi() {
               />
             </div>
             <figcaption className="font-display italic text-stone-700 text-center mt-3 text-lg">
-              Malawi y su compañero 🐾
+              pewo malvado
             </figcaption>
           </figure>
 
-          {/* Foto 2: Malawi y yo */}
-          <figure className="group bg-white p-3 pb-12 rounded-md shadow-xl rotate-[2deg] hover:rotate-0 hover:scale-105 transition-all duration-500 max-w-[260px] sm:max-w-[280px]">
+          {/* Foto 2: Malawi y yo — sin caption */}
+          <figure className="group bg-white p-3 rounded-md shadow-xl rotate-[2deg] hover:rotate-0 hover:scale-105 transition-all duration-500 max-w-[260px] sm:max-w-[280px]">
             <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden rounded-sm">
               <Image
                 src="/malawi/mama-yo.jpeg"
@@ -58,16 +58,9 @@ export function DedicatoriaMalawi() {
                 priority
               />
             </div>
-            <figcaption className="font-display italic text-stone-700 text-center mt-3 text-lg">
-              Vos y yo ❤️
-            </figcaption>
           </figure>
         </div>
 
-        {/* Firma */}
-        <p className="text-center mt-10 font-display italic text-stone-500 text-base">
-          — Hecho con cariño por Agustín
-        </p>
       </div>
     </section>
   );
