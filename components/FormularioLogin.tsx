@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import Link from "next/link";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { Loader2, AlertCircle } from "lucide-react";
 import { ingresar, type AuthResult } from "@/app/(auth)/actions";
@@ -48,9 +49,17 @@ export function FormularioLogin({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">
-          Contraseña
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-sm font-medium text-stone-700">
+            Contraseña
+          </label>
+          <Link
+            href="/recuperar"
+            className="text-xs font-semibold text-brand-600 hover:text-brand-700"
+          >
+            ¿La olvidaste?
+          </Link>
+        </div>
         <input
           name="password"
           type="password"

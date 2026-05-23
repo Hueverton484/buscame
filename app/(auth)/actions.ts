@@ -135,3 +135,86 @@ export async function cerrarSesion() {
   revalidatePath("/", "layout");
   redirect("/");
 }
+
+// =============================================
+// RECUPERAR CONTRASEÑA — paso 1: pedir email
+// =============================================
+
+export async function solicitarRecuperacion(
+  _prev: AuthResult | null,
+  formData: FormData
+): Promise<AuthResult> {
+  const email = formData.get("email")?.toString().trim().toLowerCase();
+
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return {
+      ok: false,
+      fieldErrors: { email: "Email inválido" },
+    };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const headersList = await headers();
+  const host = headersList.get("host") ?? "localhost:3000";
+  const protocol = host.includes("localhost") ? "http" : "https";
+  const origin = `${protocol}://${host}`;
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/auth/callback?next=/nueva-contrasena`,
+  });
+
+  if (error) {
+    return { ok: false, mensaje: error.message };
+  }
+
+  // No revelamos si el email existe o no por seguridad
+  return {
+    ok: true,
+    mensaje:
+      "Si la cuenta existe, te mandamos un email con un link para restablecer tu contraseña. Revisá tu inbox (y spam).",
+  };
+}
+
+// =============================================
+// RECUPERAR CONTRASEÑA — paso 2: setear nueva
+// =============================================
+
+export async function actualizarContrasena(
+  _prev: AuthResult | null,
+  formData: FormData
+): Promise<AuthResult> {
+  const password = formData.get("password")?.toString() ?? "";
+  const confirmar = formData.get("confirmar")?.toString() ?? "";
+
+  const errors: Record<string, string> = {};
+  if (password.length < 6)
+    errors.password = "La contraseña tiene que tener al menos 6 caracteres";
+  if (password !== confirmar)
+    errors.confirmar = "Las contraseñas no coinciden";
+
+  if (Object.keys(errors).length > 0) {
+    return { ok: false, fieldErrors: errors };
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      ok: false,
+      mensaje:
+        "No detecté tu sesión. El link de recuperación puede haber expirado, pedí uno nuevo.",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password });
+
+  if (error) {
+    return { ok: false, mensaje: error.message };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/mis-publicaciones?contrasena_actualizada=1");
+}
