@@ -38,6 +38,7 @@ export function FormularioRecuperar() {
         <input
           name="email"
           type="email"
+          autoComplete="email"
           placeholder="vos@email.com"
           required
           className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"

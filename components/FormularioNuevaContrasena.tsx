@@ -28,13 +28,14 @@ export function FormularioNuevaContrasena() {
         <input
           name="password"
           type="password"
+          autoComplete="new-password"
           minLength={6}
           required
           className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
         />
         {err.password && (
-          <p className="mt-1 flex items-center gap-1 text-xs text-red-600">
-            <AlertCircle className="h-3.5 w-3.5" /> {err.password}
+          <p role="alert" className="mt-1 flex items-center gap-1 text-xs text-red-600">
+            <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" /> {err.password}
           </p>
         )}
         <p className="mt-1 text-xs text-stone-500">Al menos 6 caracteres</p>
@@ -47,6 +48,7 @@ export function FormularioNuevaContrasena() {
         <input
           name="confirmar"
           type="password"
+          autoComplete="new-password"
           minLength={6}
           required
           className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"

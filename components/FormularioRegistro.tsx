@@ -35,6 +35,7 @@ export function FormularioRegistro() {
         <input
           name="nombre"
           type="text"
+          autoComplete="name"
           placeholder="Ej: María González"
           className={inputClass}
           required
@@ -45,6 +46,7 @@ export function FormularioRegistro() {
         <input
           name="email"
           type="email"
+          autoComplete="email"
           placeholder="vos@email.com"
           className={inputClass}
           required
@@ -60,6 +62,7 @@ export function FormularioRegistro() {
         <input
           name="password"
           type="password"
+          autoComplete="new-password"
           minLength={6}
           className={inputClass}
           required
@@ -70,6 +73,7 @@ export function FormularioRegistro() {
         <input
           name="telefono"
           type="tel"
+          autoComplete="tel"
           placeholder="+5491145678901"
           className={inputClass}
         />

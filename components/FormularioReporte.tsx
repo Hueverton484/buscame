@@ -315,6 +315,7 @@ export function FormularioReporte() {
             <input
               type="text"
               name="contacto_nombre"
+              autoComplete="name"
               placeholder="Ej: María González"
               className={inputClass}
               required
@@ -325,6 +326,7 @@ export function FormularioReporte() {
             <input
               type="tel"
               name="contacto_telefono"
+              autoComplete="tel"
               placeholder="+5491145678901"
               className={inputClass}
             />
@@ -334,6 +336,7 @@ export function FormularioReporte() {
             <input
               type="email"
               name="contacto_email"
+              autoComplete="email"
               placeholder="vos@email.com"
               className={inputClass}
             />
@@ -397,10 +400,10 @@ export function FormularioReporte() {
                 <button
                   type="button"
                   onClick={() => removeFoto(idx)}
-                  className="absolute top-2 right-2 h-7 w-7 flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600 text-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 right-2 h-9 w-9 flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600 text-white shadow-md sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                   aria-label="Quitar foto"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             ))}
@@ -520,8 +523,11 @@ function Campo({
 
 function ErrorMsg({ msg }: { msg: string }) {
   return (
-    <p className="mt-1 flex items-center gap-1 text-xs text-red-600">
-      <AlertCircle className="h-3.5 w-3.5" />
+    <p
+      role="alert"
+      className="mt-1 flex items-center gap-1 text-xs text-red-600"
+    >
+      <AlertCircle className="h-3.5 w-3.5" aria-hidden="true" />
       {msg}
     </p>
   );
@@ -529,8 +535,12 @@ function ErrorMsg({ msg }: { msg: string }) {
 
 function ErrorBanner({ mensaje }: { mensaje: string }) {
   return (
-    <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 flex items-start gap-3">
-      <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+    <div
+      role="alert"
+      aria-live="assertive"
+      className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 flex items-start gap-3"
+    >
+      <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" aria-hidden="true" />
       <div>
         <p className="font-semibold">No pudimos publicar el reporte</p>
         <p className="text-sm mt-0.5">{mensaje}</p>

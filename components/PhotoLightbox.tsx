@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export function PhotoGallery({
@@ -65,14 +66,16 @@ export function PhotoGallery({
         )}
       </div>
 
-      {lightboxOpen && (
-        <Lightbox
-          fotos={fotos}
-          startIdx={selectedIdx}
-          alt={alt}
-          onClose={() => setLightboxOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <Lightbox
+            fotos={fotos}
+            startIdx={selectedIdx}
+            alt={alt}
+            onClose={() => setLightboxOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -114,8 +117,12 @@ function Lightbox({
   }, [onClose, next, prev]);
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center animate-fade-in"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -150,24 +157,40 @@ function Lightbox({
         </>
       )}
 
-      <div className="relative w-full h-full max-w-6xl max-h-[90vh] p-12 flex items-center justify-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ type: "spring", stiffness: 260, damping: 30 }}
+        className="relative w-full h-full max-w-6xl max-h-[90vh] p-12 flex items-center justify-center"
+      >
         <div className="relative w-full h-full">
-          <Image
-            key={fotos[idx]}
-            src={fotos[idx]}
-            alt={`${alt} - ${idx + 1} de ${fotos.length}`}
-            fill
-            sizes="100vw"
-            className="object-contain animate-fade-in"
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={fotos[idx]}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={fotos[idx]}
+                alt={`${alt} - ${idx + 1} de ${fotos.length}`}
+                fill
+                sizes="100vw"
+                className="object-contain"
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
       {fotos.length > 1 && (
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/10 text-white text-sm px-3 py-1 rounded-full backdrop-blur">
           {idx + 1} / {fotos.length}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

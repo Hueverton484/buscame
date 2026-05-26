@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from "motion/react";
 import { MessageSquarePlus, X, Loader2, AlertCircle, MapPin } from "lucide-react";
 import { dejarPista, type PistaResult } from "@/app/publicaciones/[id]/actions";
 import { BARRIOS_CABA } from "@/lib/constants";
@@ -41,12 +42,23 @@ export function FormularioPista({
         Dejar una pista
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && !pending && setOpen(false)}
         >
-          <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="bg-white rounded-2xl max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto"
+          >
             <div className="flex items-center justify-between p-5 border-b border-stone-100 sticky top-0 bg-white">
               <h2 className="font-display text-2xl font-semibold text-stone-900 tracking-tight">
                 Dejar una pista
@@ -76,6 +88,7 @@ export function FormularioPista({
                   <input
                     type="text"
                     name="autor_nombre"
+                    autoComplete="name"
                     placeholder="Vecino anónimo"
                     className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
                   />
@@ -147,9 +160,10 @@ export function FormularioPista({
                 Las pistas son públicas. Cualquier persona viendo esta publicación las puede ver.
               </p>
             </form>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 }

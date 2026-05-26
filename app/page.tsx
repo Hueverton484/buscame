@@ -3,9 +3,8 @@ import Image from "next/image";
 import { Search, MapPin, Heart, ArrowRight, Sparkles } from "lucide-react";
 import { getPublicaciones, getEstadisticas } from "@/lib/supabase/queries";
 import { PublicacionCard } from "@/components/PublicacionCard";
+import { ReencuentroCard } from "@/components/ReencuentroCard";
 import { NumeroAnimado } from "@/components/NumeroAnimado";
-import { EstadoBadge } from "@/components/EstadoBadge";
-import { formatearFechaRelativa } from "@/lib/utils";
 import { DedicatoriaMalawi } from "@/components/DedicatoriaMalawi";
 
 export default async function HomePage() {
@@ -162,8 +161,8 @@ export default async function HomePage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
-              {reencuentros.map((p) => (
-                <Reencuentro key={p.id} publicacion={p} />
+              {reencuentros.map((p, i) => (
+                <ReencuentroCard key={p.id} publicacion={p} index={i} />
               ))}
             </div>
           </div>
@@ -222,52 +221,6 @@ function Estadistica({
       </div>
       <div className="text-sm text-stone-600">{label}</div>
     </div>
-  );
-}
-
-function Reencuentro({ publicacion }: { publicacion: Awaited<ReturnType<typeof getPublicaciones>>[number] }) {
-  const nombre =
-    publicacion.perro.nombre ||
-    (publicacion.tipo === "encontrado" ? "Perro encontrado" : "Sin nombre");
-  const foto = publicacion.fotos[0];
-
-  return (
-    <Link
-      href={`/publicaciones/${publicacion.id}`}
-      className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-stone-200 hover:border-green-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-    >
-      <div className="relative aspect-[4/3] bg-stone-100 overflow-hidden">
-        {foto && (
-          <Image
-            src={foto}
-            alt={nombre}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-        <div className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-green-600 text-white text-xs font-bold">
-          <Heart className="h-3 w-3 fill-current" /> Reunido
-        </div>
-        <div className="absolute bottom-3 left-3 right-3 text-white">
-          <h3 className="font-display text-2xl font-semibold leading-tight">{nombre}</h3>
-          <p className="text-sm text-white/90">
-            {publicacion.perro.raza} · {publicacion.ubicacion.barrio}
-          </p>
-        </div>
-      </div>
-      <div className="p-4 flex items-start gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-green-700 text-base flex-shrink-0">
-          🏠
-        </div>
-        <div>
-          <p className="text-sm text-stone-700 leading-snug">
-            Volvió a casa {formatearFechaRelativa(publicacion.fechaPublicacion)}.
-          </p>
-        </div>
-      </div>
-    </Link>
   );
 }
 

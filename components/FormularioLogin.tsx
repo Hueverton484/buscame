@@ -37,6 +37,7 @@ export function FormularioLogin({
         <input
           name="email"
           type="email"
+          autoComplete="email"
           placeholder="vos@email.com"
           className={inputClass}
           required
@@ -63,6 +64,7 @@ export function FormularioLogin({
         <input
           name="password"
           type="password"
+          autoComplete="current-password"
           className={inputClass}
           required
         />
