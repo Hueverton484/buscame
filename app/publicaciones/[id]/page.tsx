@@ -79,7 +79,9 @@ export default async function DetallePublicacion({
   ]);
 
   if (!publicacion) notFound();
-  const esPropietario = user?.id === publicacion.usuarioId;
+  // Solo es "propietario" si está logueado Y los IDs coinciden
+  // (caso contrario undefined === undefined haría que anónimos sean "dueños" de pubs anónimas)
+  const esPropietario = !!user?.id && user.id === publicacion.usuarioId;
 
   const { perro, ubicacion, contacto, fechaEvento, fotos, pistas, recompensa } =
     publicacion;
