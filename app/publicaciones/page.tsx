@@ -1,6 +1,7 @@
 import { getPublicaciones } from "@/lib/supabase/queries";
 import { MasonryGrid } from "@/components/MasonryGrid";
 import { FiltrosBusqueda } from "@/components/FiltrosBusqueda";
+import { FiltrosActivos } from "@/components/FiltrosActivos";
 import { BotonCercaMio } from "@/components/BotonCercaMio";
 import {
   filtrarPorDistancia,
@@ -47,6 +48,7 @@ export default async function PublicacionesPage({
         </aside>
 
         <section>
+          <FiltrosActivos />
           {publicaciones.length === 0 ? (
             <div className="flex flex-col items-center justify-center bg-white border border-stone-200 rounded-2xl p-12 text-center animate-fade-in-up">
               <IlustracionBuscar className="h-40 w-40 mb-3" />

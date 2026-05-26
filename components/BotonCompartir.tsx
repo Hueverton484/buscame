@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { AnimatePresence, motion } from "motion/react";
 import { Share2, Copy, Check, MessageCircle, X } from "lucide-react";
 
 interface BotonCompartirProps {
@@ -66,12 +67,23 @@ export function BotonCompartir({
         Compartir
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 animate-fade-in"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && setOpen(false)}
         >
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="bg-white rounded-2xl max-w-md w-full shadow-2xl"
+          >
             <div className="flex items-center justify-between p-5 border-b border-stone-100">
               <h2 className="text-lg font-bold text-stone-900">
                 Compartir publicación
@@ -122,9 +134,10 @@ export function BotonCompartir({
                 </div>
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 }

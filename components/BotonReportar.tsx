@@ -2,7 +2,8 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Flag, X, Loader2, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { Flag, X, Loader2, AlertTriangle } from "lucide-react";
 import {
   reportarPublicacion,
   type FlagResult,
@@ -55,14 +56,25 @@ export function BotonReportar({
         Reportar publicación
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div
-          className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={(e) => {
             if (e.target === e.currentTarget && !pending) setOpen(false);
           }}
         >
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 28 }}
+            className="bg-white rounded-2xl max-w-md w-full shadow-xl"
+          >
             <div className="flex items-center justify-between p-5 border-b border-stone-100">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-amber-500" />
@@ -81,12 +93,7 @@ export function BotonReportar({
             </div>
 
             <div className="p-5">
-              {false ? (
-                <div className="text-center py-4">
-                  <CheckCircle2 className="h-12 w-12 text-green-600 mx-auto mb-3" />
-                </div>
-              ) : (
-                <form action={formAction} className="space-y-4">
+              <form action={formAction} className="space-y-4">
                   <input
                     type="hidden"
                     name="publicacion_id"
@@ -157,12 +164,12 @@ export function BotonReportar({
                       )}
                     </button>
                   </div>
-                </form>
-              )}
+              </form>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </>
   );
 }

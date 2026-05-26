@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Lock, LogIn, UserPlus } from "lucide-react";
 import { FormularioReporte } from "@/components/FormularioReporte";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import { getCurrentUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -34,6 +35,8 @@ export default async function ReportarPage() {
   }
 
   return (
+    <>
+    <ScrollProgress />
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
       <header className="mb-8">
         <div className="flex items-center gap-3 mb-3">
@@ -58,6 +61,7 @@ export default async function ReportarPage() {
 
       <FormularioReporte />
     </div>
+    </>
   );
 }
 

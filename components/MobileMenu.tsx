@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import { Menu, X, Map, FileText, FolderHeart, User, LogIn, LogOut } from "lucide-react";
 import { cerrarSesion } from "@/app/(auth)/actions";
 import { Logo } from "./Logo";
@@ -24,13 +25,24 @@ export function MobileMenu({
         <Menu className="h-5 w-5" />
       </button>
 
+      <AnimatePresence>
       {open && (
-        <div className="md:hidden fixed inset-0 z-50 animate-fade-in">
-          <div
-            className="absolute inset-0 bg-black/40"
+        <div className="md:hidden fixed inset-0 z-50">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col">
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 320, damping: 32 }}
+            className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col"
+          >
             {/* Header del drawer */}
             <div className="flex items-center justify-between p-4 border-b border-stone-200">
               <Logo size="sm" />
@@ -107,9 +119,10 @@ export function MobileMenu({
                 Reportar perro
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
+      </AnimatePresence>
     </>
   );
 }
