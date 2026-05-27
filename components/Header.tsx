@@ -18,6 +18,7 @@ export async function Header() {
           <nav className="hidden md:flex items-center gap-1">
             <NavLink href="/publicaciones">Publicaciones</NavLink>
             <NavLink href="/mapa">Mapa</NavLink>
+            <NavLink href="/comunidad">Comunidad</NavLink>
             {perfil && (
               <NavLink href="/mis-publicaciones">Mis publicaciones</NavLink>
             )}

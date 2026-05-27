@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X, Map, FileText, FolderHeart, User, LogIn, LogOut } from "lucide-react";
+import { Menu, X, Map, FileText, FolderHeart, User, LogIn, LogOut, Heart } from "lucide-react";
 import { cerrarSesion } from "@/app/(auth)/actions";
 import { Logo } from "./Logo";
 
@@ -76,6 +76,9 @@ export function MobileMenu({
               </NavItem>
               <NavItem href="/mapa" icon={<Map className="h-5 w-5" />} onClick={() => setOpen(false)}>
                 Mapa
+              </NavItem>
+              <NavItem href="/comunidad" icon={<Heart className="h-5 w-5" />} onClick={() => setOpen(false)}>
+                Comunidad
               </NavItem>
               {perfil && (
                 <NavItem href="/mis-publicaciones" icon={<FolderHeart className="h-5 w-5" />} onClick={() => setOpen(false)}>
