@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Lock, LogIn, UserPlus } from "lucide-react";
 import { FormularioReporte } from "@/components/FormularioReporte";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { PageHero } from "@/components/PageHero";
 import { getCurrentUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -36,31 +37,21 @@ export default async function ReportarPage() {
 
   return (
     <>
-    <ScrollProgress />
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
-      <header className="mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white shadow-md">
-            <span className="text-2xl">🐾</span>
-          </div>
-          <div>
-            <h1 className="font-display text-4xl sm:text-5xl font-semibold text-stone-900 tracking-tight leading-tight">
-              Reportar un perro
-            </h1>
-          </div>
-        </div>
-        <p className="text-stone-600 leading-relaxed">
-          Completá los datos para publicar el reporte. Mientras más información des, más fácil será reencontrar al perro.
-        </p>
+      <ScrollProgress />
+      <PageHero
+        title="Reportar un perro"
+        subtitle="Completá los datos para publicar el reporte. Mientras más información des, más fácil será reencontrar al perro."
+        badge="🐾 Nuevo reporte"
+      >
         {usados > 0 && (
-          <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-full">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/80 bg-white/10 border border-white/20 px-3 py-1.5 rounded-full backdrop-blur-md">
             Te quedan {LIMITE_DIARIO - usados} de {LIMITE_DIARIO} publicaciones hoy
-          </p>
+          </span>
         )}
-      </header>
-
-      <FormularioReporte />
-    </div>
+      </PageHero>
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
+        <FormularioReporte />
+      </div>
     </>
   );
 }

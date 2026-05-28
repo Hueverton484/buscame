@@ -9,6 +9,7 @@ import {
   useTransform,
   useScroll,
 } from "motion/react";
+import { MeshGradient } from "@paper-design/shaders-react";
 import {
   Heart,
   PawPrint,
@@ -68,8 +69,14 @@ export function Hero({ estadisticas }: { estadisticas: Estadisticas }) {
     <section
       ref={sectionRef}
       onMouseMove={handleMouseMove}
-      className="relative overflow-hidden bg-gradient-to-br from-stone-950 via-stone-900 to-brand-950 text-white min-h-screen flex items-center"
+      className="relative overflow-hidden text-white min-h-screen flex items-center"
     >
+      {/* Animated WebGL shader background */}
+      <MeshGradient
+        className="absolute inset-0 w-full h-full"
+        colors={["#0c0a09", "#7c2d12", "#c2410c", "#1c1917"]}
+        speed={0.3}
+      />
       {/* Background orbs con parallax */}
       <motion.div
         style={{ x: orb1X, y: orb1Y }}
