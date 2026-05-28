@@ -5,6 +5,12 @@ import Link from "next/link";
 import { motion, useInView } from "motion/react";
 import { MapPin, ArrowRight } from "lucide-react";
 
+// Coordenadas geográficas reales de CABA
+// Bounds: lat [-34.524, -34.710] lon [-58.531, -58.335]
+// Fórmula: x = (lon - lonMin) / (lonMax - lonMin) * 76 + 12
+//          y = (latMax - lat) / (latMax - latMin) * 84 + 8
+// lonMin=-58.531 lonMax=-58.335 latMax=-34.524 latMin=-34.710
+
 interface Punto {
   x: number;
   y: number;
@@ -14,18 +20,30 @@ interface Punto {
 }
 
 const PUNTOS: Punto[] = [
-  { x: 28, y: 35, barrio: "Belgrano", estado: "lost", delay: 0 },
-  { x: 45, y: 48, barrio: "Palermo", estado: "spotted", delay: 0.3 },
-  { x: 38, y: 60, barrio: "Villa Crespo", estado: "reunited", delay: 0.6 },
-  { x: 58, y: 55, barrio: "Recoleta", estado: "lost", delay: 0.9 },
-  { x: 65, y: 70, barrio: "San Telmo", estado: "spotted", delay: 1.2 },
-  { x: 25, y: 55, barrio: "Núñez", estado: "reunited", delay: 1.5 },
-  { x: 52, y: 75, barrio: "Caballito", estado: "lost", delay: 1.8 },
-  { x: 68, y: 40, barrio: "Almagro", estado: "spotted", delay: 2.1 },
-  { x: 35, y: 80, barrio: "Boedo", estado: "lost", delay: 2.4 },
-  { x: 75, y: 60, barrio: "Microcentro", estado: "reunited", delay: 0.4 },
-  { x: 22, y: 70, barrio: "Saavedra", estado: "spotted", delay: 1.0 },
-  { x: 48, y: 30, barrio: "Colegiales", estado: "lost", delay: 1.7 },
+  // Saavedra — noroeste de CABA (-34.545, -58.487)
+  { x: 29, y: 17, barrio: "Saavedra", estado: "spotted", delay: 1.0 },
+  // Núñez — norte, cerca del río (-34.548, -58.462)
+  { x: 39, y: 16, barrio: "Núñez", estado: "reunited", delay: 1.5 },
+  // Belgrano — norte-centro (-34.568, -58.459)
+  { x: 40, y: 25, barrio: "Belgrano", estado: "lost", delay: 0 },
+  // Colegiales — norte, levemente al oeste de Palermo (-34.574, -58.444)
+  { x: 46, y: 28, barrio: "Colegiales", estado: "lost", delay: 1.7 },
+  // Palermo — norte, cerca del río (-34.572, -58.420)
+  { x: 57, y: 27, barrio: "Palermo", estado: "spotted", delay: 0.3 },
+  // Recoleta — noreste, sobre el río (-34.584, -58.394)
+  { x: 67, y: 33, barrio: "Recoleta", estado: "lost", delay: 0.9 },
+  // Villa Crespo — centro (-34.598, -58.440)
+  { x: 48, y: 40, barrio: "Villa Crespo", estado: "reunited", delay: 0.6 },
+  // Almagro — centro-este (-34.610, -58.418)
+  { x: 57, y: 46, barrio: "Almagro", estado: "spotted", delay: 2.1 },
+  // Microcentro — este, nivel centro (-34.605, -58.375)
+  { x: 75, y: 43, barrio: "Microcentro", estado: "reunited", delay: 0.4 },
+  // Caballito — centro (-34.618, -58.432)
+  { x: 51, y: 50, barrio: "Caballito", estado: "lost", delay: 1.8 },
+  // Boedo — centro-sur (-34.629, -58.414)
+  { x: 59, y: 55, barrio: "Boedo", estado: "lost", delay: 2.4 },
+  // San Telmo — sureste, sobre el río (-34.621, -58.374)
+  { x: 76, y: 52, barrio: "San Telmo", estado: "spotted", delay: 1.2 },
 ];
 
 const COLORES = {
@@ -41,6 +59,24 @@ const COLORES = {
     text: "text-emerald-400",
   },
 };
+
+// Contorno de CABA trazado a partir de sus límites reales:
+// Oeste/Norte: Av. General Paz
+// Este/Norte: Río de la Plata (costa curva)
+// Sur: Riachuelo
+// Coordenadas mapeadas al mismo sistema que PUNTOS
+const CABA_PATH =
+  "M 14 12 L 28 8 L 44 7 L 60 8 L 73 8 " +      // límite norte (de NO a NE)
+  "C 82 12 87 20 88 30 " +                         // costa NE curva (zona Palermo/Recoleta)
+  "L 87 43 " +                                     // costa este (Microcentro/Puerto Madero)
+  "L 83 56 " +                                     // costa SE (San Telmo)
+  "L 76 69 " +                                     // viraje a La Boca
+  "L 66 80 " +                                     // La Boca
+  "C 56 87 45 90 35 89 " +                         // Riachuelo (curva sur)
+  "L 20 85 " +                                     // Riachuelo suroeste
+  "L 14 76 " +                                     // esquina SO (límite con Bs. As. Provincia)
+  "L 13 55 L 13 35 " +                             // Av. General Paz subiendo
+  "Z";                                             // cierre al punto de inicio
 
 export function MapaPulsante() {
   const ref = useRef<HTMLDivElement>(null);
@@ -130,7 +166,7 @@ export function MapaPulsante() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="relative aspect-square rounded-3xl bg-stone-900 border border-white/10 overflow-hidden shadow-2xl"
           >
-            {/* Background SVG: shape of CABA simplified */}
+            {/* SVG con contorno real de CABA + grilla */}
             <svg
               viewBox="0 0 100 100"
               className="absolute inset-0 w-full h-full"
@@ -162,55 +198,61 @@ export function MapaPulsante() {
               <rect width="100" height="100" fill="url(#mapBgGrad)" />
               <rect width="100" height="100" fill="url(#mapGrid)" />
 
-              {/* Outline aproximado de CABA */}
+              {/* Fill de CABA — relleno suave */}
               <motion.path
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={inView ? { pathLength: 1, opacity: 0.4 } : {}}
-                transition={{ duration: 3, ease: "easeOut" }}
-                d="M 20 25 L 30 18 L 45 22 L 60 18 L 75 25 L 82 38 L 80 55 L 75 72 L 68 82 L 55 88 L 42 85 L 28 80 L 18 65 L 15 48 Z"
-                fill="rgba(255, 107, 53, 0.05)"
-                stroke="rgba(255, 107, 53, 0.6)"
-                strokeWidth="0.4"
-                strokeDasharray="2 1"
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ duration: 1, delay: 0.3 }}
+                d={CABA_PATH}
+                fill="rgba(255, 107, 53, 0.07)"
               />
 
-              {/* Connection lines entre puntos */}
-              {PUNTOS.slice(0, 6).map((p, i) => {
-                const next = PUNTOS[(i + 1) % PUNTOS.length];
-                return (
-                  <motion.line
-                    key={`line-${i}`}
-                    x1={p.x}
-                    y1={p.y}
-                    x2={next.x}
-                    y2={next.y}
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="0.15"
-                    initial={{ pathLength: 0 }}
-                    animate={inView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 2, delay: 0.5 + i * 0.1 }}
-                  />
-                );
-              })}
+              {/* Contorno animado de CABA */}
+              <motion.path
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={inView ? { pathLength: 1, opacity: 0.55 } : {}}
+                transition={{ duration: 3.5, ease: "easeOut", delay: 0.2 }}
+                d={CABA_PATH}
+                fill="none"
+                stroke="rgba(255, 107, 53, 0.7)"
+                strokeWidth="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Líneas de conexión sutiles entre barrios cercanos */}
+              {[
+                [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [6, 7], [7, 9], [9, 10],
+              ].map(([a, b], i) => (
+                <motion.line
+                  key={`line-${i}`}
+                  x1={PUNTOS[a].x}
+                  y1={PUNTOS[a].y}
+                  x2={PUNTOS[b].x}
+                  y2={PUNTOS[b].y}
+                  stroke="rgba(255, 255, 255, 0.06)"
+                  strokeWidth="0.2"
+                  initial={{ opacity: 0 }}
+                  animate={inView ? { opacity: 1 } : {}}
+                  transition={{ duration: 1.5, delay: 1 + i * 0.15 }}
+                />
+              ))}
             </svg>
 
-            {/* Pulsing dots */}
+            {/* Pulsing dots — posicionados geográficamente */}
             {PUNTOS.map((punto, i) => (
               <Dot key={i} punto={punto} inView={inView} />
             ))}
 
-            {/* Glow center */}
+            {/* Glow central */}
             <motion.div
-              animate={{
-                opacity: [0.2, 0.5, 0.2],
-                scale: [1, 1.1, 1],
-              }}
+              animate={{ opacity: [0.2, 0.45, 0.2], scale: [1, 1.1, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-48 w-48 rounded-full bg-brand-500/20 blur-3xl pointer-events-none"
               aria-hidden="true"
             />
 
-            {/* Top label */}
+            {/* Etiqueta superior */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-xs font-mono">
               <span className="px-2 py-1 rounded bg-black/50 backdrop-blur text-white/60 border border-white/10">
                 CABA · Actividad reciente
@@ -239,7 +281,7 @@ function Dot({ punto, inView }: { punto: Punto; inView: boolean }) {
       initial={{ opacity: 0, scale: 0 }}
       animate={inView ? { opacity: 1, scale: 1 } : {}}
       transition={{
-        delay: 1 + punto.delay * 0.2,
+        delay: 1.2 + punto.delay * 0.2,
         type: "spring",
         stiffness: 200,
         damping: 18,
@@ -250,9 +292,9 @@ function Dot({ punto, inView }: { punto: Punto; inView: boolean }) {
       }}
       className="absolute -translate-x-1/2 -translate-y-1/2 group/dot"
     >
-      {/* Ripples */}
+      {/* Ripple exterior */}
       <motion.span
-        animate={{ scale: [1, 3], opacity: [0.6, 0] }}
+        animate={{ scale: [1, 3.2], opacity: [0.55, 0] }}
         transition={{
           duration: 2.5,
           repeat: Infinity,
@@ -262,7 +304,7 @@ function Dot({ punto, inView }: { punto: Punto; inView: boolean }) {
         className={`absolute inset-0 h-3 w-3 rounded-full ${color.ring}`}
       />
       <motion.span
-        animate={{ scale: [1, 4], opacity: [0.4, 0] }}
+        animate={{ scale: [1, 4.5], opacity: [0.35, 0] }}
         transition={{
           duration: 3,
           repeat: Infinity,
@@ -271,11 +313,11 @@ function Dot({ punto, inView }: { punto: Punto; inView: boolean }) {
         }}
         className={`absolute inset-0 h-3 w-3 rounded-full ${color.ring}`}
       />
-      {/* Dot */}
+      {/* Dot central */}
       <span
         className={`relative block h-3 w-3 rounded-full ${color.bg} shadow-lg`}
       />
-      {/* Tooltip on hover */}
+      {/* Tooltip al hover */}
       <span className="absolute left-1/2 -translate-x-1/2 -top-7 whitespace-nowrap px-2 py-0.5 rounded bg-stone-900 text-white text-[10px] font-medium opacity-0 group-hover/dot:opacity-100 transition-opacity pointer-events-none border border-white/10">
         {punto.barrio}
       </span>
